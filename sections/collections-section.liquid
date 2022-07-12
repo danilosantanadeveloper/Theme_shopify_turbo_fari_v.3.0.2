@@ -1,0 +1,66 @@
+ 
+
+ 
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+ 
+<div class="destop-sw" style=" background-image:url('{{ section.settings.bg-image.src | img_url: 'master' }}');">
+  <div id="colect-banner">
+<div class="vearlt">
+{{ section.settings.text-box }}
+ 
+  </div>
+</div>
+ </div>
+
+
+
+
+
+
+<div class="mobile-df" style="background-image:url('{{ section.settings.bg-mobile.src | img_url: 'master' }}');" style="display: none;">
+  
+  <div id="colect-banner">
+<div class="vearlt">
+{{ section.settings.text-box }}
+ 
+  </div>
+</div> </div>
+
+
+
+{% schema %}
+  {
+    "name": "Collections Section",
+    "settings": [
+      {
+        "id": "text-box",
+        "type": "textarea",
+        "label": "Heading",
+        "default": "Title"
+      },
+
+     
+{
+  "type": "image_picker",
+  "id": "bg-image",
+  "label": "Custom Background Image"
+},
+{
+  "type": "image_picker",
+  "id": "bg-mobile",
+  "label": "Mobile Background Image"
+}
+   
+       
+    ]
+
+
+  }
+{% endschema %}

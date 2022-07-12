@@ -1,0 +1,29 @@
+{% assign stamped_key_public = shop.metafields['stamped'].api_public %}
+{% if customer %}
+  {% assign stamped_key_secret = shop.metafields['stamped'].api_secret %}
+  {% assign stamped_customer_accepts_marketing = customer.accepts_marketing %}
+  {% assign stamped_customer_email = customer.email %}
+  {% assign stamped_customer_first_name = customer.first_name %}
+  {% assign stamped_customer_id = customer.id %}
+  {% assign stamped_customer_last_name = customer.last_name %}
+  {% assign stamped_customer_orders_count = customer.orders_count %}
+  {% assign stamped_customer_tags = customer.tags | join: ',' %}
+  {% assign stamped_customer_total_spent = customer.total_spent %}
+  {% assign stamped_customer_locale = shop.locale %}
+  {% assign auth_token = customer.id | append: customer.email | hmac_sha256: stamped_key_secret %}
+{% endif %}
+<div id='stamped-rewards-init' class='stamped-rewards-init'
+  data-key-public='{{ stamped_key_public }}'
+{% if customer %}
+  data-customer-accepts-marketing='{{ stamped_customer_accepts_marketing | escape }}'
+  data-customer-id='{{ stamped_customer_id | escape }}'
+  data-customer-email='{{ stamped_customer_email | escape }}'
+  data-customer-first-name='{{ stamped_customer_first_name | escape }}'
+  data-customer-last-name='{{ stamped_customer_last_name | escape }}'
+  data-customer-orders-count='{{ stamped_customer_orders_count | escape }}'
+  data-customer-tags='{{ stamped_customer_tags | escape }}'
+  data-customer-locale='{{ stamped_customer_locale | escape }}'
+  data-customer-total-spent='{{ stamped_customer_total_spent | escape }}'
+  data-key-auth='{{ auth_token }}'
+{% endif %}
+></div>

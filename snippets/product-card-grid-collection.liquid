@@ -1,0 +1,259 @@
+<div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card">
+  {% capture img_id %}ProductCardImage-{{ section.id }}-{{ product.id }}{% endcapture %}
+  {% capture wrapper_id %}ProductCardImageWrapper-{{ section.id }}-{{ product.id }}{% endcapture %}
+  {%- assign preview_image = product.featured_media.preview_image -%}
+  {%- assign img_url = preview_image | img_url: '3x3' | replace: '_3x3.', '_{width}x.' -%}
+
+  {% unless preview_image == blank %}
+    {% include 'image-style', image: preview_image, height: max_height, wrapper_id: wrapper_id, img_id: img_id %}
+  {% endunless %}
+  
+  <div class="lazylo-colam">
+    {% if product.has_only_default_variant %}
+      {% if product.images.size > 1 %}
+        {% for image_cell in product.images limit:5 %}
+          <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+            <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+              <div class="image-cell">
+                {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                  {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                  <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+                {%- endif -%}
+                <a href="{{product.url}}">
+                  <img class="grid-view-item__image lazyload"
+                        alt="{{ preview_image.alt }}"
+                        data-src="{{ image_cell | img_url: 'master' }}"
+                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ preview_image.aspect_ratio }}"
+                        data-sizes="auto"
+                        data-image />
+                </a>
+              </div>
+            </div>
+            <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+          <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+            <div class="image-cell">
+              {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+              {%- endif -%}
+              <a href="{{product.url}}">
+                <img class="grid-view-item__image lazyload"
+                      alt="{{ preview_image.alt }}"
+                      data-src="{{ img_url }}"
+                      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                      data-aspectratio="{{ preview_image.aspect_ratio }}"
+                      data-sizes="auto"
+                      data-image />
+                </a>
+            </div>
+          </div>
+          <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+        </div>
+      {% endif %}
+    {% else %}
+      {% assign v_has_images = false %}
+      {% for variant in product.variants %}
+        {% if variant.image.src  %}
+          {% assign v_has_images = true %}
+        {% endif %}
+      {% endfor %}
+      {% if v_has_images %}
+        {% for variant in product.variants %}
+        {% if variant.image.src  %}
+          {% assign v_image = variant.image | img_url: 'master' %}
+        {% else %}
+          {% assign v_image = preview_image | img_url: 'master' %}
+        {% endif %}
+          <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+            <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+              <div class="image-cell">
+                {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                  {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                  <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+                {%- endif -%}
+                <a href="{{product.url}}">
+                  <img class="grid-view-item__image lazyload"
+                        alt="{{ v_image.alt }}"
+                        data-src="{{ v_image }}"
+                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ v_image.aspect_ratio }}"
+                        data-sizes="auto"
+                        data-image />
+                </a>
+              </div>
+            </div>
+            <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+          </div>
+        {% endfor %}
+      {% else %}
+        {% if product.images.size > 1 %}
+          {% for image_cell in product.images limit:5 %}
+            <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+              <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+                <div class="image-cell">
+                  {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                    {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                    <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+                  {%- endif -%}
+                  <a href="{{product.url}}">
+                    <img class="grid-view-item__image lazyload"
+                          alt="{{ preview_image.alt }}"
+                          data-src="{{ image_cell | img_url: 'master' }}"
+                          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                          data-aspectratio="{{ preview_image.aspect_ratio }}"
+                          data-sizes="auto"
+                          data-image />
+                  </a>
+                </div>
+              </div>
+              <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+            <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+              <div class="image-cell">
+                {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                  {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                  <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+                {%- endif -%}
+                <a href="{{product.url}}">
+                  <img class="grid-view-item__image lazyload"
+                        alt="{{ preview_image.alt }}"
+                        data-src="{{ img_url }}"
+                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ preview_image.aspect_ratio }}"
+                        data-sizes="auto"
+                        data-image />
+                  </a>
+              </div>
+            </div>
+            <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+          </div>
+        {% endif %}
+      {% endif %}
+      
+    {% endif %}
+  </div>
+ 
+  <noscript>
+    {% capture image_size %}{{ max_height }}x{{ max_height }}{% endcapture %}
+    <img class="grid-view-item__image" src="{{ preview_image | img_url: image_size, scale: 2 }}" alt="{{ preview_image.alt }}" style="max-width: {{ max_height | times: preview_image.aspect_ratio }}px;">
+  </noscript>
+  <div class="badg-cx">
+    <div class="prod-hed">
+      <div class="pro-dfs" aria-hidden="true"><a href="{{product.url }}">{{ product.title }}</a></div>
+      <div class="pro-prs"> {% include 'product-price-listing', product: product, show_vendor: show_vendor %}</div>
+    </div>
+    
+    <div class="card-rating">
+      <div data-oke-reviews-product-listing-rating>{{ product.metafields.okendo.ProductListingSnippet }}</div>
+    </div>
+    {% unless product.has_only_default_variant %}
+      {% for option in product.options_with_values %}
+        <div class="selector-wrapper type--{{option.name | handleize | replace: '?', '' }}  sh-{{ product.id }}">
+          <div class="noter-row">
+            <div class="varia-notr">
+              {% for value in option.values %}
+                {% for variant in product.varia-notrnts %}
+                  {%- assign display = "block" -%}
+                  {% if variant.image and variant.title contains value%}
+                    {%- assign img = variant.image | img_url: "large" -%}
+                    {%- assign display = "none" -%}
+                  {% endif %}
+                {% endfor %}
+                {% if forloop.first == true %}
+                  <div class="option-item tooltip"><span class="tooltiptext">{{value}}</span><span style="background-color:{{value}}; display:inline-block;background-position:center;" class="color-swatch grid-item-swatch {{value}} active" data-title="{{value | handleize}}">{{value}}</span></div>
+                {% else %}  
+                  <div class="option-item tooltip"><span class="tooltiptext">{{value}}</span><span style="background-color:{{value}}; display:inline-block;background-position:center;" class="color-swatch grid-item-swatch {{value}}" data-title="{{value | handleize}}">{{value}}</span></div> 
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% endunless %}
+    <select name="id" type="hidden" data-productid="{{ product.id }}" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js">
+      {% for variant in product.variants %}
+        <option  value="{{ variant.id }}"
+          {%- if variant == current_variant %} selected="selected" {%- endif -%}
+          {%- if variant.available == false %} disabled="disabled" {% endif %}
+        >
+          {{ variant.title | handleize }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  {% if product.id == 4866828042337 %}
+    <a class="btn go_to_product_starterkit" href="{{ product.url }}">KOPEN</a>
+  {% else %}
+  <a class="btn go_to_product{% unless product.available %} sold-out {% endunless %}" {% if product.available %} data-vid="{{ product.first_available_variant.id }}" {% else %} disabled {% endif %} href="#">KOPEN</a>
+  {% endif %}
+  
+  <div class="btn-pros">
+          {% comment %}
+      {% unless product.has_only_default_variant %}
+        <div class="product-form__controls-group">
+          {% for option in product.options_with_values %}
+            <div class="selector-wrapper js product-form__item">
+              <label {% if option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+                {{ option.name }}
+              </label>
+              <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
+                id="SingleOptionSelector-{{ forloop.index0 }}"
+                data-index="option{{ forloop.index }}"
+              >
+                {% for value in option.values %}
+                  <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+        </div>
+      {% endunless %}
+      <select name="id" data-productid="{{ product.id }}" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js">
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}"
+            {%- if variant == current_variant %} selected="selected" {%- endif -%}
+          >
+            {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+          </option>
+        {% endfor %}
+      </select>
+      {% if section.settings.show_quantity_selector %}
+        <div class="product-form__controls-group">
+          <div class="product-form__item">
+            <label for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
+            <input type="number" id="Quantity-{{ section.id }}"
+              name="quantity" value="1" min="1" pattern="[0-9]*"
+              class="product-form__input product-form__input--quantity" data-quantity-input
+            >
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="product-form__error-message-wrapper product-form__error-message-wrapper--hidden{% if section.settings.enable_payment_button %} product-form__error-message-wrapper--has-payment-button{% endif %}"
+        data-error-message-wrapper
+        role="alert"
+      >
+        <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+        {% include 'icon-error' %}
+        <span class="product-form__error-message" data-error-message>{{ 'products.product.quantity_minimum_message' | t }}</span>
+      </div>
+    {% endcomment %}
+      
+    
+    <div class="btn-cart">
+      {% if product.id == 4866828042337 %}
+        <a class="btn home go-add-to-cart_starterkit" href="{{ product.url }}">KOPEN</a>
+      {% else %}
+      <a class="btn home go-add-to-cart {% unless product.available %} sold-out {% endunless %}" {% if product.available %} data-vid="{{ product.first_available_variant.id }}" {% else %} disabled {% endif %} href="#">KOPEN</a>
+      {% endif %}
+    </div>
+  </div>
+</div>

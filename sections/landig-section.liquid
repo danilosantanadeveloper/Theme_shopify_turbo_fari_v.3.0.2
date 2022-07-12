@@ -1,0 +1,76 @@
+<div class="shopify_explorer__content">
+  {%- assign expand_text-block = section.settings.expand_text-block -%}
+
+  {%- for block in section.blocks -%}
+
+    {%- case block.type -%}
+  
+  
+  
+      {%- when 'text-block' -%}
+  
+  
+        <div class="shopify_explorer_faq__item {% unless expand_text-block %}shopify_explorer_faq__item--expandable{% endunless %}" {{ block.shopify_attributes }}>
+          
+          <div class="page-xt">
+      
+           <div  class="{{ block.settings.title }} {% unless expand_text-block %}link{% endunless %}">
+              <div class="page-width">
+             {{ block.settings.answer }}
+             </div>
+            </div>
+    
+        </div>
+  
+  
+  
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+
+
+
+
+
+
+
+
+{% schema %}
+  {
+    "name": "text-block",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "expand_questions",
+        "label": "Expand all questions by default",
+        "default": false
+      }
+  ],
+    "blocks": [
+   
+      {
+        "type": "text-block",
+        "name": "text-block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "class"
+          },
+          {
+            "type": "textarea",
+            "id": "answer",
+            "label": "Contant"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+ 
+{% endstylesheet %}
+ 

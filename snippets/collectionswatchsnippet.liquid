@@ -1,0 +1,122 @@
+<style>
+.grid--view-items
+{
+overflow: hidden;
+}
+div.swatch_swatchdiv
+{
+text-align: center;
+}
+div.swatchy_colordiv {
+    margin-bottom: 8px;
+}
+</style>
+{% include 'swatchyappvariables' %}
+{% assign producturl = product.url %}
+{% assign colorindex = 1 %}
+{% assign colornamevaluesstring = '' %}
+{% for option in product.options_with_values  %}
+{% for colorName in colornamesarray %}
+{% assign _colorname = colorName | downcase %}
+{% assign _colorname = _colorname | replace: ' ', '' %}
+{% assign _optionname = option.name | downcase %}
+{% assign _optionname = _optionname | replace: ' ', '' %}
+  {% if _colorname == _optionname %}	
+    {% if option.position == 1 %}   
+		{% assign colorindex = 1 %}
+		{% for optionvalue in option.values %}
+          {% assign colornamevaluesstring = colornamevaluesstring | append: optionvalue %}
+          {% assign colornamevaluesstring = colornamevaluesstring | append: ',' %}
+		{% endfor %} 
+    {% endif %}
+	{% if option.position == 2 %}   
+		{% assign colorindex = 2 %}
+		{% for optionvalue in option.values %}
+          {% assign colornamevaluesstring = colornamevaluesstring | append: optionvalue %}
+          {% assign colornamevaluesstring = colornamevaluesstring | append: ',' %}
+		{% endfor %}
+    {% endif %}
+	{% if option.position == 3 %}
+		{% assign colorindex = 3 %}
+        {% for optionvalue in option.values %}
+          {% assign colornamevaluesstring = colornamevaluesstring | append: optionvalue %}
+          {% assign colornamevaluesstring = colornamevaluesstring | append: ',' %}
+		{% endfor %} 
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% endfor %}
+
+<div id="swatch_swatchdiv" style='display: none; cursor: pointer' class='swatch_swatchdiv'>
+{% assign colornamevaluesArray = colornamevaluesstring | split: ',' %}
+{% assign FinaladdedcolorArray = '' %}
+{% assign FinaladdedcolorArrayString = '' %}  
+{% assign VariantImageArray = '' %}
+{% assign VariantImageArrayString = '' %}  
+  
+{% for variant in product.variants %}
+  {% for colorName in colornamevaluesArray %}
+  {% assign IsVariantAdded = 'false' %}
+  {% if colorindex == 1 %}
+    {% if variant.option1 == colorName %} 
+      {% assign FinaladdedcolorArrayString = FinaladdedcolorArrayString | append: variant.option1  %}
+      {% assign FinaladdedcolorArrayString = FinaladdedcolorArrayString | append: ','  %}
+       {% if variant.image != null %}
+       {% assign variantImage = variant.image.src | img_url:'300x300' %}
+      {% else %}
+       {% assign variantImage = product.featured_image.src | img_url:'large' %}
+  	  {% endif %}
+      {% assign VariantImageArrayString = VariantImageArrayString | append: variantImage  %}
+      {% assign VariantImageArrayString = VariantImageArrayString | append: ','  %} 
+      {% assign IsVariantAdded = 'true' %}
+    {% endif %}
+  {% endif %}
+  {% if colorindex == 2 %}  
+	{% if variant.option2 == colorName %} 
+  
+      {% assign FinaladdedcolorArrayString = FinaladdedcolorArrayString | append: variant.option2  %}
+      {% assign FinaladdedcolorArrayString = FinaladdedcolorArrayString | append: ','  %}
+       {% if variant.image != null %}
+       {% assign variantImage = variant.image.src | img_url:'300x300' %}
+      {% else %}
+       {% assign variantImage = product.featured_image.src | img_url:'large' %}
+  	  {% endif %}
+      {% assign VariantImageArrayString = VariantImageArrayString | append: variantImage  %}
+      {% assign VariantImageArrayString = VariantImageArrayString | append: ','  %} 
+      {% assign IsVariantAdded = 'true' %}
+  	{% endif %}
+  {% endif %}
+  {% if colorindex == 3 %}
+	{% if variant.option3 == colorName %} 
+      {% assign FinaladdedcolorArrayString = FinaladdedcolorArrayString | append: variant.option3  %}
+      {% assign FinaladdedcolorArrayString = FinaladdedcolorArrayString | append: ','  %}
+      {% if variant.image != null %}
+       {% assign variantImage = variant.image.src | img_url:'300x300' %}
+      {% else %}
+       {% assign variantImage = product.featured_image.src | img_url:'large' %}
+  	  {% endif %}
+      {% assign VariantImageArrayString = VariantImageArrayString | append: variantImage  %}
+      {% assign VariantImageArrayString = VariantImageArrayString | append: ','  %} 
+      {% assign IsVariantAdded = 'true' %}
+  	{% endif %}
+  {% endif %}
+{% endfor %}
+   {% endfor %}  
+  {% assign FinaladdedcolorArray = FinaladdedcolorArrayString | split:',' %}
+  {% assign FinaladdedcolorArray = FinaladdedcolorArray | uniq %} 
+  {% assign VariantImageArray = VariantImageArrayString | split:',' %}
+  {% assign VariantImageArray = VariantImageArray | uniq %}
+  {% assign indexvalue = 0 %}    
+  {% for colorname in FinaladdedcolorArray %}   
+   <div title="{{ colorname }}" data-tippy-content="{{ colorname }}" swatchy-data-variantid="{{ VariantIdsArray[indexvalue] }}" class="swatchy_colordiv" swatchy-data-color="{{ colorname }}" swatchy-data-href="{{ producturl }}" swatchy-data-variantimage="{{ VariantImageArray[indexvalue] }}" style="margin-right: 5px; object-fit: cover; width: 30px; height: 30px; display: inline-block; background-image: url('{{ VariantImageArray[indexvalue] }}'); background-repeat: no-repeat; background-position: 50% 50%;"></div>   
+  {% assign indexvalue = indexvalue |plus: 1 %}
+  {% endfor %}
+</div>
+
+{% assign isCollectionPage = false %}
+{% if collection %}
+{% assign isCollectionPage = true %}
+
+{% else %}
+{% assign isCollectionPage = false %}
+{% endif %}

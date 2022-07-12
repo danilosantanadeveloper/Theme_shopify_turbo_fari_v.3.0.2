@@ -1,0 +1,40 @@
+<script>
+    if(typeof(Spurit) === 'undefined'){
+        var Spurit = {};
+    }
+    if(!Spurit.recurringInvoices){
+        Spurit.recurringInvoices = {};
+    }
+    if(!Spurit.recurringInvoices.snippet){
+        Spurit.recurringInvoices.snippet = {};
+    }
+    Spurit.recurringInvoices.snippet.appId = '46';
+    Spurit.recurringInvoices.snippet.shopHash = 'b11f364634000c6a88feca664ea5e30a';
+    Spurit.recurringInvoices.snippet.shopDomain = 'fairytabs.myshopify.com';
+    Spurit.recurringInvoices.snippet.folderStore = 'https://cdn-spurit.com/shopify-apps/recurring-invoices/store/';
+    Spurit.recurringInvoices.snippet.folderCss = 'https://cdn-spurit.com/shopify-apps/recurring-invoices/';
+    Spurit.recurringInvoices.snippet.cdnHostPath = 'https://cdn-spurit.com/';
+    Spurit.recurringInvoices.snippet.cdnJsLibsPath = 'https://cdn-spurit.com/all-apps/';
+    Spurit.recurringInvoices.snippet.moneyFormat = '{{ shop.money_format }}';
+
+    if(typeof(Spurit.globalSnippet) === 'undefined'){
+        Spurit.globalSnippet = {
+            shop_currency: '{{ shop.currency }}',
+            money_format: '{{ shop.money_format }}',
+            cart: {{ cart | json }},
+            customer_id: '{{ customer.id }}'
+        };
+    }
+
+    if(typeof(Spurit.recurringInvoices.translation) === 'undefined'){
+        Spurit.recurringInvoices.translation = {
+            select_periodicity: 'Select frequency:',
+            weeks: 'Weeks',
+            months: 'Months',
+            weekly: 'Weekly',
+            monthly: 'Monthly',
+            custom: 'Custom'
+        };
+    }
+</script>
+<script src="https://cdn-spurit.com/shopify-apps/recurring-invoices/common.js"></script>

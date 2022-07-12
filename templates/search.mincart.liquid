@@ -1,0 +1,19 @@
+{% layout none %}
+[
+    {%- for product in cart.items -%}
+    {
+        "product_id": {{ product.product_id }},
+        "variant_id": {{ product.variant_id }},
+        "Collection": {{ product.product.collections | json }},
+        "Product Type": {{ product.product.type | json }},
+        "Vendor": {{ product.vendor | json }},
+        "Tag": {{ product.product.tags | json }},
+        "price": {{ product.line_price }},
+        "quantity": {{ product.quantity }},
+        "weight": {{ product.grams | times: product.quantity }},
+        "variant_title": {{product.title | json}},
+        "product_title": {{product.product.title | json}},
+        "id": {{product.product_id}}
+    }{% unless forloop.last == true %},{% endunless %}
+    {%- endfor -%}
+]

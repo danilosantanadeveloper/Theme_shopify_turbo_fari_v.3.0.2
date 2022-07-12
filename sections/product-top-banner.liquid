@@ -1,0 +1,80 @@
+<div class="full-width-image-container">
+  <div class="page-width heading-c">
+    {% if section.settings.title1 != blank %}
+      <h1>{{ section.settings.title1 }}</h1>
+    {% endif %}
+    {% if section.settings.title2 != blank %}
+      <h1>{{ section.settings.title2 }}</h1>
+    {% endif %}
+    {% if section.settings.title3 != blank %}
+      <h1>{{ section.settings.title3 }}</h1>
+    {% endif %} 
+  </div>
+  <img class="back-img" src="{{ section.settings.image | img_url: 'master' }}" />
+</div>
+{% schema %}
+{
+  "name": {
+    "da": "Billede med tekstoverlejring",
+    "de": "Foto mit überlegtem Text",
+    "en": "Image with text overlay",
+    "es": "magen con texto superpuesto",
+    "fi": "Kuva päällä olevalla tekstillä",
+    "fr": "Image avec calque texte",
+    "hi": "पाठ ओवरले के साथ इमेज",
+    "it": "Immagine con testo",
+    "ja": "テキストオーバーレイ付き画像",
+    "ko": "텍스트 오버레이 포함 이미지",
+    "nb": "Bilde med tekstoverlegg",
+    "nl": "Foto met tekstoverlay",
+    "pt-BR": "Imagem com texto",
+    "pt-PT": "Imagem com sobreposição de texto",
+    "sv": "Bild med textöverlagring",
+    "th": "การวางซ้อนรูปภาพพร้อมข้อความ",
+    "zh-CN": "带文本叠加的图片",
+    "zh-TW": "附文字疊加層的圖片"
+  },
+  "class": "index-section index-section--flush",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": {
+        "da": "Billede",
+        "de": "Foto",
+        "en": "Image",
+        "es": "Imagen",
+        "fi": "Kuva",
+        "fr": "Image",
+        "hi": "इमेज",
+        "it": "Immagine",
+        "ja": "画像",
+        "ko": "이미지",
+        "nb": "Bilde",
+        "nl": "Afbeelding",
+        "pt-BR": "Imagem",
+        "pt-PT": "Imagem",
+        "sv": "Bild",
+        "th": "รูปภาพ",
+        "zh-CN": "图片",
+        "zh-TW": "圖片"
+      }
+    },
+    {
+      "type": "text",
+      "id": "title1", 
+      "label":"Firt row text"
+    },
+    {
+      "type": "text",
+      "id": "title2", 
+      "label":"Second row text"
+    },
+    {
+      "type": "text",
+      "id": "title3",
+      "label":"Third row text"
+    }
+  ]
+}
+{% endschema %}

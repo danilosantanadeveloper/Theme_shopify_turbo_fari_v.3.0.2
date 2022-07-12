@@ -1,0 +1,57 @@
+
+{% capture CFH %}{{ content_for_header }}{% endcapture %}  
+{% if shop.metafields.easy_coming_soon.easy_coming_soon_status == 1 %}
+{% assign show_ecs_page = false %}
+{% if CFH contains "admin_bar_iframe" or theme.role == "unpublished" %}
+    {% assign show_ecs_page = true %}
+ {% endif %}
+   
+
+{% if shop.metafields.easy_coming_soon.ecs_password_status == 1 %}
+    {% assign ECS_PASS = cart.attributes["ECS_PASS"] | md5  %}
+     {% if ECS_PASS == shop.metafields.easy_coming_soon.ecs_password_field %}
+        {% assign show_ecs_page = true %}
+    {% endif %}
+{% endif %} 
+
+{% assign whitelist_page = false %}
+
+{% if shop.metafields.easy_coming_soon.ecs_whiteList_field != "NO_WHITELIST_URL" and show_ecs_page == true %}
+   {% assign ec_whitelist_urls = shop.metafields.easy_coming_soon.ecs_whiteList_field | split: "," %}
+   {% for url in ec_whitelist_urls %}  
+   {% assign url = url | strip %} 
+      {% if url == "/" %}  
+        {% assign whitelist_page = true %}
+        {% assign show_ecs_page = true %}
+      {% elsif url == request.path  %}  
+         {% assign whitelist_page = true %}
+         {% assign show_ecs_page = true %}
+	  {% else %}
+        {% assign show_ecs_page = false %}
+      {% endif %}
+    {% endfor %} 
+{% endif %}
+
+{% if CFH contains "design_mode" %}
+    {% assign show_ecs_page = true %}
+    {% assign whitelist_page = true %}
+{% endif %}
+
+ 
+{% if show_ecs_page == false %}
+{% if whitelist_page == false %}
+{% unless content_for_header contains "adminBarInjector.init" %}
+{% unless content_for_header contains "designMode" %}
+    
+    <script> 
+        var url  = window.location.href; 
+        if(url.indexOf("oseid") > -1 || url.indexOf("fts") > -1) {} else {
+          window.location.pathname == "/apps/easy-coming-soon" ? "" : window.location.href = "{{shop.url}}/apps/easy-coming-soon"; 
+         }
+    </script> 
+{% endunless %}
+{% endunless %}
+{% endif %}
+{% endif %}
+{% endif %}
+ 

@@ -1,0 +1,148 @@
+
+<div class="nav-shops">
+ 
+<a href="#" onclick="openNavb()">{% include 'icon-hamburger' %}</a>
+</div>
+
+
+
+<div id="mySidenavwer" class="overlay1">
+
+  <!-- Button to close the overlay navigation -->
+  <a href="javascript:void(0)" class="closeNavb" onclick="closeNavb
+                                                          ()"><img src="https://cdn.shopify.com/s/files/1/0281/0619/5041/files/Quit.svg?v=1609135173" alt="#"></a>
+
+  <!-- Overlay content -->
+  <div class="overlay-content">
+    <div class="bogd-nav">
+      
+      <a href="/collections/all" class="spt"> shop</a>
+    
+    <a href="/pages/over-ons" class="ons"> over ons</a>
+      
+      <a href="#" class="ont-dropdonw" >  ontdekken  <span class="drop-arrow"><img src="https://cdn.shopify.com/s/files/1/0281/0619/5041/files/drop-arrow.svg?v=1609137683" alt="#"></span></a>
+     
+      <div id="musicinfo">
+        <ul class="sab-nav">         
+          <li><a href="/pages/ingredienten">INGREDIËNTEN</a></li>
+          <li><a href=" /pages/duurzaamheid">duurzaamheid</a></li>
+          <li><a href="/pages/partners"> partnerships</a> </li>
+        </ul>
+</div>
+      <a href="https://fairytabs.com/products/fairytabs-boek-harmen-van-straaten-alle-tanden-op-elkaar-en-poetsen-maar" class="feest">Fairytabs boek: Alle tanden op elkaar...</a>
+      <a href="/pages/music" class="lied"> Tandenpoets Lied</a>  
+      
+    </div>
+    <div class="short-navs">
+         <a href="https://cdn.shopify.com/s/files/1/0281/0619/5041/files/Fairy-Tabs-vakantie-doe-boek.pdf?v=1625556218">Vakantie doe-boek</a>
+
+
+     <a href="/pages/klantenservice">FAQ</a>
+    
+      <!--<a href="/blogs/blog">Blog</a>-->
+      <a href="/pages/contact">CONTACT</a>
+    </div> 
+<div class="foot-social side-bpanl">
+  <ul>
+    <li><a class="link_social_icon" href="https://www.instagram.com/fairytabs/" target="_blank"><img class="c_social_icon" src="{{'ins_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'ins.png' | asset_img_url: 'master' }}" /></a></li>
+    <li><a class="link_social_icon" href="https://www.facebook.com/fairytabs" target="_blank"><img class="c_social_icon" src="{{'fb_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'fb.png' | asset_img_url: 'master' }}" /></a></li>
+    <li><a class="link_social_icon" href="https://pinterest.com/fairytabs/" target="_blank"><img class="c_social_icon" src="{{'pinterest_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'pinterest.png' | asset_img_url: 'master' }}" /></a></li>
+    <li> <a class="link_social_icon" href="https://tiktok.com/@fairytabs" target="_blank"> <img class="c_social_icon" src="{{'tiktok_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'tiktok.png' | asset_img_url: 'master' }}" /></a></li>
+    <li> <a class="link_social_icon" href="https://www.youtube.com/channel/UCqDKhG0fU6IX7fk6D2x7img" target="_blank"><img class="c_social_icon" src="{{'youtubu_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'youtubu.png' | asset_img_url: 'master' }}" /></a></li>
+    <li> <a class="link_social_icon" href="/pages/music" target="_blank"><img class="c_social_icon" src="{{'media_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'media.png' | asset_img_url: 'master' }}" /></a></li>
+    <li class="fair"><a href="https://www.instagram.com/explore/tags/fairytabs/" target="_blank"> #fairytabs </a> </li>
+  </ul>
+     </div>
+</div> 
+</div> 
+<!-- Use any element to open/show the overlay navigation menu -->
+ 
+<Script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></Script>
+
+<script>function openNavb() {
+  document.getElementById("mySidenavwer").style.width = "100%";
+}
+
+function closeNavb() {
+  document.getElementById("mySidenavwer").style.width = "0";
+}
+  
+  </script>
+ 
+    
+    
+<style>  
+.overlay1 {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 100%;
+    width: 0;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background:#fff; /* Black fallback color */
+   
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.1s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+    position: relative;
+    top: 10%;
+    width: 100%;
+    margin-top: 0;
+    padding: 0 70px 0 60px;
+}
+ 
+/* Position the close button (top right corner) */
+.closeNavb {
+    position: absolute;
+    top: 50px;
+    right: 70px;
+}
+ 
+  
+  .spt {color: #9CDBD9;}
+
+.ons {
+    color: #FEDB00;
+}
+
+.ont {
+    color: #005670;
+}
+    .spt:hover {color: #9CDBD9;}
+
+.ons:hover {
+    color: #FEDB00;
+}
+
+.ont:hover {
+    color: #005670;
+}
+  
+  
+  .bogd-nav {
+    border-bottom: 1px solid #CBCBCB;
+    display: inline-block;
+    padding: 0 0 0;    margin: 0 0 16px;
+}.short-navs a {
+    display: inline-block;
+    width: 100%;
+    font-size: 16px;
+    font-family: 'Dosis', sans-serif;
+    color: #666666;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 0 7px;
+}
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+    .closeNavb {
+        font-size: 40px !important;
+        top: 15px;
+        right: 35px;
+    }
+}</style>

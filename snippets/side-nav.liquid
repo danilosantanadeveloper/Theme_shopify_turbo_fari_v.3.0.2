@@ -1,0 +1,166 @@
+
+<div class="nav-shops"> <a href="/collections/all">Shop</a> <a href="#" onclick="openNav()">over ons</a> </div>
+<div id="myNav" class="overlay">
+
+<!-- Button to close the overlay navigation --> 
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> </a> 
+
+<!-- Overlay content -->
+<div class="overlay-content">
+<div class="bogd-nav"> 
+  <a href="/collections/all" class="spt"> shop</a> 
+  <a href="/pages/over-ons" class="ons"> over ons</a>
+  <a href="#" class="ont-dropdonw" > ontdekken <span class="drop-arrow"><img src="https://cdn.shopify.com/s/files/1/0281/0619/5041/files/drop-arrow.svg?v=1609137683" alt="#"></span></a>
+  <div id="musicinfo">
+    <ul class="sab-nav">
+      <li><a href="/pages/ingredienten">INGREDIËNTEN</a></li>
+      <li><a href=" /pages/duurzaamheid">duurzaamheid</a></li>
+      <li><a href="/pages/partners">partnerships</a> </li>
+      
+      {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <li>
+              <a href="{{ routes.account_url }}" data-no-instant>{{ customer.name }}</a>
+            </li>
+            <li data-no-instant>
+              <a href="{{ routes.account_logout_url }}" id="customer_logout_link">{{ 'layout.customer.log_out' | t }}</a>
+            </li>
+          {% else %}
+            <li data-no-instant>
+              <a href="{{ routes.account_login_url }}" id="customer_login_link">{{ 'layout.customer.log_in' | t }}</a>
+            </li>
+          {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+  <a href="https://fairytabs.com/products/fairytabs-boek-harmen-van-straaten-alle-tanden-op-elkaar-en-poetsen-maar" class="feest">Fairytabs boek: Alle tanden op elkaar...</a>
+  <a href="/pages/music" class="lied">Tandenpoets Lied</a>
+   
+</div>
+<div class="short-navs">
+   <a href="https://cdn.shopify.com/s/files/1/0281/0619/5041/files/Fairy-Tabs-vakantie-doe-boek.pdf?v=1625556218">Vakantie doe-boek</a>
+  <a href="/pages/klantenservice">FAQ</a>
+  <!--<a href="/blogs/blog">Blog</a>--> 
+  <a href="/pages/contact">CONTACT</a>
+  <a href="#" class="account-dropdonw" > Account <span class="drop-arrow"><img src="https://cdn.shopify.com/s/files/1/0281/0619/5041/files/drop-arrow.svg?v=1609137683" alt="#"></span></a>
+  <div id="musicinfo">
+    <ul class="sab-nav">
+      {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <li>
+              <a href="{{ routes.account_url }}" data-no-instant>{{ customer.name }}</a>
+            </li>
+            <li data-no-instant>
+              <a href="{{ routes.account_logout_url }}" id="customer_logout_link">{{ 'layout.customer.log_out' | t }}</a>
+            </li>
+          {% else %}
+            <li data-no-instant>
+              <a href="{{ routes.account_login_url }}" id="customer_login_link">{{ 'layout.customer.log_in' | t }}</a>
+            </li>
+            <li data-no-instant>
+              <a href="{{ routes.account_register_url }}" id="customer_login_link">Registreren</a>
+            </li>
+          {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+<div class="foot-social side-bpanl">
+<ul>
+<li><a class="link_social_icon" href="https://www.instagram.com/fairytabs/" target="_blank"><img class="c_social_icon" src="{{'ins_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'ins.png' | asset_img_url: 'master' }}" /></a></li>
+<li><a class="link_social_icon" href="https://www.facebook.com/fairytabs" target="_blank"><img class="c_social_icon" src="{{'fb_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'fb.png' | asset_img_url: 'master' }}" /></a></li>
+<li><a class="link_social_icon" href="https://pinterest.com/fairytabs/" target="_blank"><img class="c_social_icon" src="{{'pinterest_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'pinterest.png' | asset_img_url: 'master' }}" /></a></li>
+<li> <a class="link_social_icon" href="https://tiktok.com/@fairytabs" target="_blank"> <img class="c_social_icon" src="{{'tiktok_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'tiktok.png' | asset_img_url: 'master' }}" /></a></li>
+<li> <a class="link_social_icon" href="https://www.youtube.com/channel/UCqDKhG0fU6IX7fk6D2x7img" target="_blank"><img class="c_social_icon" src="{{'youtubu_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'youtubu.png' | asset_img_url: 'master' }}" /></a></li>
+<li> <a class="link_social_icon" href="/pages/music" target="_blank"><img class="c_social_icon" src="{{'media_darker.png' | asset_img_url: 'master' }}" /><img class="d_social_icon" src="{{'media.png' | asset_img_url: 'master' }}" /></a></li>
+<li class="fair"><a href="https://www.instagram.com/explore/tags/fairytabs/" target="_blank"> #fairytabs </a> </li>
+  </ul>
+</div>
+</div>
+</div>
+<!-- 
+<ul class="nav">
+ 
+  <li class="button-dropdown">
+  ontdekken  <a href="javascript:void(0)" class="dropdown-toggle">
+       
+    </a>
+    
+           <ul class="dropdown-menu sab-nav">
+      <li><a href="/pages/ingredienten">INGREDIËNTEN</a></li>
+      <li><a href=" /pages/duurzaamheid">duurzaamheid</a></li>
+      <li><a href="/pages/partners"> partnerships</a> </li>
+    </ul>
+  
+  </li>
+ 
+ 
+</ul>
+
+  --> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+<script>/* Open when someone clicks on the span element */
+function openNav() {
+    document.getElementById("myNav").style.width = "36%";
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+}
+  
+  
+  </script> 
+<script>
+  jQuery(document).ready(function (e) {
+    function t(t) {
+        e(t).bind("click", function (t) {
+            t.preventDefault();
+            e(this).parent().fadeOut()
+        })
+    }
+    e(".dropdown-toggle").click(function () {
+        var t = e(this).parents(".button-dropdown").children(".dropdown-menu").is(":hidden");
+        e(".button-dropdown .dropdown-menu").hide();
+        e(".button-dropdown .dropdown-toggle").removeClass("active");
+        if (t) {
+            e(this).parents(".button-dropdown").children(".dropdown-menu").toggle().parents(".button-dropdown").children(".dropdown-toggle").addClass("active")
+        }
+    });
+    e(document).bind("click", function (t) {
+        var n = e(t.target);
+        if (!n.parents().hasClass("button-dropdown")) e(".button-dropdown .dropdown-menu").hide();
+    });
+    e(document).bind("click", function (t) {
+        var n = e(t.target);
+        if (!n.parents().hasClass("button-dropdown")) e(".button-dropdown .dropdown-toggle").removeClass("active");
+    })
+});
+  </script> 
+
+<style> 
+
+ a.dropdown-toggle {
+    background: url(https://cdn.shopify.com/s/files/1/0281/0619/5041/files/drop-arrow.svg?v=1609137683) no-repeat;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.nav li .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    margin-top: 3px;
+    text-align: left;
+}
+
+.nav li .dropdown-menu.active {
+    display: block;
+}
+
+.nav li .dropdown-menu a {
+    width: 150px;
+}</style>

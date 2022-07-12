@@ -1,0 +1,172 @@
+<script>
+if(document.documentElement.innerHTML.match(/https:\\\/\\\/mincart-react.molsoftapps.com\\\/js\\\/mincart.js/)){ 
+    var mincartSettings = {
+        texts : {}
+    };
+
+    var newCartItems = {};
+    var cartItems = {};
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    mincartSettings.checkoutButtonsText = '[name="checkout"]:not([id^="restrict-shipping"]), [name="chekout"], [name="checkoutButton"]:not([id^="restrict-shipping"]), button[onclick="window.location=\'/checkout\'"]:not([id^="restrict-shipping"]), form[action^=\'/checkout\'] input[value=\'Checkout\']:not([id^="restrict-shipping"]), .blockCheckout:not([id^="restrict-shipping"]), [href^="/checkout"]:not([id^="restrict-shipping"]), [href^="checkout"]:not([id^="restrict-shipping"]), form[action^=\'/checkout\'] input[type=\'submit\']:not([id^="restrict-shipping"]), .ConversionDriverCart--checkout:not([id^="restrict-shipping"]), .checkout-button:not([id^="restrict-shipping"]), form[action^=\'/checkout\'] button[type=\'submit\']:not([id^="restrict-shipping"]), .mincart-state-unlocked:not([id^="restrict-shipping"]), .mincart-state-refresh:not([id^="restrict-shipping"]), .mincart-state-popup:not([id^="restrict-shipping"]), .mincart-state-loading';
+    mincartSettings.checkoutButtons = document.querySelectorAll(mincartSettings.checkoutButtonsText);
+    mincartSettings.additionalCheckoutText = ".additional-checkout-buttons, .additional-checkout-button, #additional-checkout-buttons, #dynamic-checkout-cart";
+    mincartSettings.additionalCheckout = document.querySelectorAll(mincartSettings.additionalCheckoutText);
+
+        for(var i = 0; i < mincartSettings.checkoutButtons.length; i++){
+            mincartSettings.checkoutButtons[i].disabled = true;
+        }
+        for(var i = 0; i < mincartSettings.additionalCheckout.length; i++){
+            mincartSettings.additionalCheckout[i].classList.add('mincartDisabled');
+        }
+
+        {% if template contains 'product' %}
+            mincartSettings.addProductButton = document.querySelectorAll('[name="add"]');
+
+            {% if product.available %}
+                for(var i = 0; i < mincartSettings.addProductButton.length; i++){
+                    mincartSettings.addProductButton[i].disabled = true;
+                }
+            {% endif %}
+        {% endif %}
+
+        (function () {
+            var loadScript = function loadScript(url, callback) {
+
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+
+                // If the browser is Internet Explorer.
+                if (script.readyState) {
+                    script.onreadystatechange = function () {
+                        if (script.readyState == "loaded" || script.readyState == "complete") {
+                            script.onreadystatechange = null;
+                            callback();
+                        }
+                    };
+                    // For any other browser.
+                } else {
+                    script.onload = function () {
+                        callback();
+                    };
+                }
+
+                script.src = url;
+                document.getElementsByTagName("head")[0].appendChild(script);
+            };
+
+            /* This is my app's JavaScript */
+            var myAppJavaScript = function myAppJavaScript($) {
+                mincartSettings.checkoutButtons = $(mincartSettings.checkoutButtonsText);
+                mincartSettings.additionalCheckout = $(mincartSettings.additionalCheckoutText);
+
+                mincartSettings.checkoutButtons.each(function(){
+                    if($(this).is('input')){
+                        mincartSettings.texts.checkoutText = $(this).val();
+                        return false;
+                    }
+                    else{
+                        mincartSettings.texts.checkoutText = $(this).html();
+                    }
+                });
+                
+                if(mincartSettings.checkoutButtons.is('input')){
+                    mincartSettings.checkoutButtons.addClass('mincartDisabled');
+                    mincartSettings.checkoutButtons.val("Loading");
+                }
+                else{
+                    mincartSettings.checkoutButtons.addClass('mincartDisabled');
+                    mincartSettings.checkoutButtons.html("Loading");
+                }
+
+                {% if template contains 'product' %}
+                    mincartSettings.addProductButton = $('[name="add"]');
+
+                    if(mincartSettings.addProductButton.is('input')){
+                        mincartSettings.texts.addProductButton = mincartSettings.addProductButton.val();
+                    }
+                    else{
+                        mincartSettings.texts.addProductButton = mincartSettings.addProductButton.html();
+                    }
+
+                    {% if product.available %}
+                        if(mincartSettings.addProductButton.is('input')){
+                            mincartSettings.addProductButton.addClass('mincartDisabled');
+                            mincartSettings.addProductButton.val("Loading");
+                        }
+                        else{
+                            mincartSettings.addProductButton.addClass('mincartDisabled');
+                            mincartSettings.addProductButton.html("Loading");
+                        }
+                    {% endif %}
+                {% endif %}
+                
+                
+                mincartSettings.itemsInCart = [
+                    {%- for product in cart.items -%}
+                    {
+                        "product_id": {{ product.product_id }},
+                        "variant_id": {{ product.variant_id }},
+                        "Collection": {{ product.product.collections | json }},
+                        "Product Type": {{ product.product.type | json }},
+                        "Vendor": {{ product.vendor | json }},
+                        "Tag": {{ product.product.tags | json }},
+                        "price": {{ product.line_price }},
+                        "quantity": {{ product.quantity }},
+                        "weight": {{ product.grams | times: product.quantity }},
+                        "variant_title": {{product.title | json}},
+                        "product_title": {{product.product.title | json}},
+                        "id": {{product.product_id}}
+                    }{% unless forloop.last == true %},{% endunless %}
+                    {%- endfor -%}
+                ];
+
+                mincartSettings.currentProduct = {
+                    "product_id": {{ product.id | json }},
+                    "Collection": {{ product.collections | json }},
+                    "product_type": {{ product.type | json }},
+                    "Vendor": {{ product.vendor | json }},
+                    "Tag": {{ product.tags | json }},
+                    "variants": {{ product.variants | json }},
+                    "price": {{ product.price | json }},
+                    "min": null,
+                    "max": null
+                };
+
+                mincartSettings.customer = {% if customer %}{
+                    id: {{ customer.id | json }},
+                    tags: {{ customer.tags | json }}
+                }{% else %}null{% endif %};
+
+                $("input[name^=updates]").each(function(){
+                    cartItems[$(this).attr('id')] = $(this).val();
+                    newCartItems[$(this).attr('id')] = $(this).val();
+
+                    $(this).bind("propertychange change keyup input paste", function(){
+                        $("input[name^=updates]").each(function(){
+                            newCartItems[$(this).attr('id')] = $(this).val();
+                        })
+                    })
+                });
+            };
+
+            if (typeof jQuery === 'undefined' || parseFloat(jQuery.fn.jquery) < 3.0 || !jQuery.ajax) {
+                loadScript('//mincart-react.molsoftapps.com/js/jquery.min.js', function () {
+                    var jQuery331 = jQuery.noConflict(true);
+                    myAppJavaScript(jQuery331);
+                });
+            } else {
+                myAppJavaScript(jQuery);
+            }
+        })();
+    });
+}
+</script>
+
+<style>
+    .mincartDisabled{
+        pointer-events: none !important;
+    }
+</style>
+

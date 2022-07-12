@@ -1,0 +1,1046 @@
+{%- comment -%} PayWhirl Snippets, version 2.04 {%- endcomment -%}
+
+/*
+ * PayWhirl Customer Portal theme
+ *
+ * Based on Normalize.css and Shopify Debut
+ */
+
+
+/*================ Color Settings ================*/
+
+// Text colors
+$color-text: #3a3a3a;
+$color-body-text: #333232;
+$color-text-field: #ffffff;
+$color-text-field-text: #000000;
+$color-btn-primary: #005670;
+$color-btn-primary-text: #ffffff;
+$color-text-focus: #005670;
+$color-btn-primary-focus: #005670;
+
+// Link buttons and secondary cta
+$color-link: $color-body-text;
+$opacity-link-hover: 0.6;
+
+// Backgrounds
+$color-body: #ffffff;
+$color-bg: #ffffff;
+$color-bg-alt: rgba(51, 50, 50, 0.05);
+
+// Border colors
+$color-border: #ebebeb;
+$color-border-form: #cccccc;
+
+// Helper colors for form error states
+$color-disabled: #f4f4f4;
+$color-disabled-border: #f4f4f4;
+$color-error: #d20000;
+$color-error-message-list: #651818;
+$color-error-bg: #fff8f8;
+$color-success: #1F873D;
+$color-success-bg: #f8fff9;
+
+// Forms
+$color-form-text: #333;
+$color-error-input-text: $color-error;
+$input-padding-top-bottom: 10px;
+$input-padding-left-right: 18px;
+$input-padding-top-bottom-small: 8px;
+$input-padding-left-right-small: 15px;
+$input-group-height: 46px;
+$input-group-height-small: 42px;
+$input-border-width: 1px;
+
+/*================ Sizing Variables ================*/
+
+$width-site: 1200px;
+$gutter-site: 55px;
+$gutter-site-mobile: 22px;
+$section-spacing: 55px;
+$section-spacing-small: 35px;
+$border-radius: 2px;
+$icon-size: 20px;
+
+/*================ Typography ================*/
+
+{% assign header_font = settings.type_header_family | default: settings.type_header_font | default: settings.font_heading %}
+{% assign base_font = settings.type_base_family | default: settings.type_base_font | default: settings.font_body %}
+
+{{ header_font | font_face }}
+{{ base_font | font_face }}
+
+{%- assign base_font_bolder = base_font | font_modify: 'weight', 'bolder' -%}
+{%- assign base_font_bold = base_font | font_modify: 'weight', 'bold' -%}
+{%- assign base_font_italic = base_font | font_modify: 'style', 'italic' -%}
+{%- assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic' -%}
+
+{{ base_font_bold | font_face }}
+{{ base_font_bolder | font_face }}
+{{ base_font_italic | font_face }}
+{{ base_font_bold_italic | font_face }}
+
+$font-weight-body--bold: {{ base_font_bold.weight | default: 700 }};
+$font-weight-body--bolder: {{ base_font_bolder.weight | default: 700 }};
+
+$font-stack-header: {% if header_font %}{{ header_font.family }}, {{ header_font.fallback_families }}{% else %}sans-serif{% endif %};
+$font-style-header: {{ header_font.style | default: 'normal' }};
+$font-weight-header: {{ header_font.weight | default: 'normal' }};
+
+$font-stack-body: {% if base_font %}{{ base_font.family }}, {{ base_font.fallback_families }}{% else %}sans-serif{% endif %};
+$font-style-body: {{ base_font.style | default: 'normal' }};
+$font-weight-body: {{ base_font.weight | default: 'normal' }};
+
+$font-size-header: 26px;
+$font-size-base: 16px;
+$font-size-mobile-input: 16px;
+
+/*================ Mixins ================*/
+
+@function em($pxval, $base: $font-size-base) {
+  @if not unitless($pxval) {
+    $pxval: strip-units($pxval);
+  }
+  @if not unitless($base) {
+    $base: strip-units($base);
+  }
+  @return ($pxval / $base) * 1em;
+}
+
+@function strip-units($value) {
+  @return ($value / ($value * 0 + 1));
+}
+
+@mixin clearfix() {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  // sass-lint:disable no-misspelled-properties
+  *zoom: 1;
+}
+
+@mixin media-query($media-query) {
+  $breakpoint-found: false;
+
+  @each $breakpoint in $grid-breakpoints {
+    $name: nth($breakpoint, 1);
+    $declaration: nth($breakpoint, 2);
+
+    @if $media-query == $name and $declaration {
+      $breakpoint-found: true;
+
+      @media only screen and #{$declaration} {
+        @content;
+      }
+    }
+  }
+
+  @if $breakpoint-found == false {
+    @warn 'Breakpoint "#{$media-query}" does not exist';
+  }
+}
+
+@mixin placeholder-text($color: $color-text-field-text, $opacity: 0.6) {
+  color: $color;
+  opacity: $opacity;
+}
+
+@mixin error-placeholder-text($color: $color-error-input-text, $opacity: 0.5) {
+  color: $color;
+  opacity: $opacity;
+}
+
+/*============ Grid Settings ==============*/
+
+$grid-medium: 650px;
+$grid-large: 990px;
+$grid-widescreen: 1400px;
+$grid-gutter: 30px;
+$grid-gutter-mobile: 22px;
+
+$small: 'small';
+$medium: 'medium';
+$medium-down: 'medium-down';
+$medium-up: 'medium-up';
+$large: 'large';
+$large-down: 'large-down';
+$large-up: 'large-up';
+$widescreen: 'widescreen';
+
+$grid-breakpoints: (
+  $small '(max-width: #{$grid-medium - 1})',
+  $medium '(min-width: #{$grid-medium}) and (max-width: #{$grid-large - 1})',
+  $medium-down '(max-width: #{$grid-large - 1})',
+  $medium-up '(min-width: #{$grid-medium})',
+  $large '(min-width: #{$grid-large}) and (max-width: #{$grid-widescreen - 1})',
+  $large-down '(max-width: #{$grid-widescreen - 1})',
+  $large-up '(min-width: #{$grid-large})',
+  $widescreen '(min-width: #{$grid-widescreen})'
+);
+
+
+/*============================================================================
+  #Normalize
+  Based on normalize.css v3.0.2 | MIT License | git.io/normalize
+==============================================================================*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+body,
+input,
+textarea,
+button,
+select {
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  background-color: transparent;
+}
+
+b,
+strong {
+  font-weight: $font-weight-body--bolder;
+}
+
+em {
+  font-style: italic;
+}
+
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+img {
+  max-width: 100%;
+  border: 0;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button,
+html input {
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+input {
+  &[type="search"],
+  &[type="number"],
+  &[type="email"],
+  &[type="password"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/*============================================================================
+  Fast Tap
+  enables no-delay taps (FastClick-esque) on supporting browsers
+==============================================================================*/
+a,
+button,
+[role="button"],
+input,
+label,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+/*================ #Basic Styles ================*/
+body,
+html {
+  background-color: transparent;
+}
+
+.page-width {
+  @include clearfix();
+  max-width: $width-site;
+  margin: 0 auto;
+}
+
+code,
+pre {
+  font-family: Consolas, monospace;
+  font-size: 1em;
+}
+
+pre {
+  overflow: auto;
+}
+
+body,
+input,
+textarea,
+button,
+select {
+  font-size: $font-size-base;
+  font-family: $font-stack-body;
+  font-style: $font-style-body;
+  font-weight: $font-weight-body;
+  color: $color-text;
+  line-height: 1.5;
+}
+
+// Prevent zoom on touch devices in active inputs
+@include media-query($medium-down) {
+  input,
+  textarea,
+  select,
+  button {
+    font-size: $font-size-mobile-input;
+  }
+}
+
+/*================ Headings ================*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 ($section-spacing-small / 2);
+  font-family: $font-stack-header;
+  font-style: $font-style-header;
+  font-weight: $font-weight-header;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: inherit;
+  }
+}
+
+h1 {
+  font-size: em(floor($font-size-header * 1.35));
+  text-transform: none;
+  letter-spacing: 0;
+
+  @include media-query($small) {
+    font-size: em(floor($font-size-header * 1.25));
+  }
+}
+
+h2 {
+  font-size: em(floor($font-size-header * 0.78));
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+
+  @include media-query($small) {
+    font-size: em(floor(($font-size-header * 0.78) * 0.9));
+  }
+}
+
+h3 {
+  font-size: em($font-size-header);
+  text-transform: none;
+  letter-spacing: 0;
+
+  @include media-query($small) {
+    font-size: em(floor($font-size-header * 0.78));
+  }
+}
+
+h4 {
+  font-size: em(floor($font-size-header * 0.68));
+
+  @include media-query($small) {
+    font-size: em(floor(($font-size-header * 0.68) * 0.9));
+  }
+}
+
+h5 {
+  font-size: em(floor($font-size-header * 0.58));
+
+  @include media-query($small) {
+    font-size: em(floor(($font-size-header * 0.58) * 0.9));
+  }
+}
+
+h6 {
+  font-size: em(floor($font-size-header * 0.54));
+
+  @include media-query($small) {
+    font-size: em(floor(($font-size-header * 0.54) * 0.9));
+  }
+}
+
+.h1 {
+  @extend h1;
+}
+
+.h2 {
+  @extend h2;
+}
+
+.h3 {
+  @extend h3;
+}
+
+.h4 {
+  @extend h4;
+}
+
+.h5 {
+  @extend h5;
+}
+
+.h6 {
+  @extend h6;
+}
+
+/*================ Paragraph styles ================*/
+p {
+  color: $color-body-text;
+  margin: 0 0 ($section-spacing-small / 1.8);
+
+  @include media-query($small) {
+    font-size: em($font-size-base - 1);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/*================ Lists ================*/
+li {
+  list-style: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+ol {
+  list-style: decimal;
+}
+
+/*================ Links and Buttons ================*/
+a {
+  color: $color-text;
+  text-decoration: none;
+
+  &:not([disabled]):hover,
+  &:focus {
+    color: #005670;
+  }
+}
+
+a[href^="tel"] {
+  color: inherit;
+}
+
+/*================ Grid ================*/
+.grid {
+  @include clearfix();
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-left: -$grid-gutter;
+
+  @include media-query($small) {
+    margin-left: -$grid-gutter-mobile;
+  }
+}
+
+.grid__item {
+  float: left;
+  padding-left: $grid-gutter;
+  width: 100%;
+
+  @include media-query($small) {
+    padding-left: $grid-gutter-mobile;
+  }
+
+  &[class*="--push"] {
+    position: relative;
+  }
+}
+
+.medium-up--one-half {
+  @include media-query($medium-up) {
+    width: 50%;
+  }
+}
+
+/*================ #Icons ================*/
+@mixin animation($animation) {
+  animation: $animation;
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+.icon {
+  display: inline-block;
+  width: $icon-size;
+  height: $icon-size;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+svg,
+symbol {
+  &.icon:not(.icon--full-color) {
+    circle,
+    ellipse,
+    g,
+    line,
+    path,
+    polygon,
+    polyline,
+    rect {
+      fill: inherit;
+      stroke: inherit;
+    }
+
+    .icon-error__symbol {
+      fill: #ffffff;
+    }
+  }
+}
+
+@include keyframes(spin) {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-spinner {
+  @include animation(spin 500ms infinite linear);
+}
+
+/*================ Buttons ================*/
+.btn {
+  user-select: none;
+  appearance: none;
+  display: inline-block;
+  width: auto;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+  padding: $input-padding-top-bottom-small $input-padding-left-right-small;
+  background-color: $color-btn-primary;
+  color: $color-btn-primary-text;
+  font-family: $font-stack-body;
+  font-style: $font-style-body;
+  font-weight: $font-weight-header;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: normal;
+  font-size: $font-size-base - 2;
+
+  @include media-query($medium-up) {
+    padding: $input-padding-top-bottom $input-padding-left-right;
+  }
+
+  &:not([disabled]):hover,
+  &:focus {
+    color: $color-btn-primary-text;
+    background-color: $color-btn-primary-focus;
+  }
+
+  .icon-arrow-right,
+  .icon-arrow-left {
+    height: 9px;
+  }
+
+  &[disabled],
+  &[aria-disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: $color-btn-primary;
+  border-color: $color-btn-primary;
+
+  &:not([disabled]):hover,
+  &:focus {
+    background-color: transparent;
+    color: $color-btn-primary-focus;
+    border-color: $color-btn-primary-focus;
+  }
+}
+
+.btn--small {
+  padding: 8px 10px;
+  font-size: em(12);
+  line-height: 1;
+}
+
+h2 > .btn--small {
+  font-size: 0.6em;
+}
+
+.text-link {
+  display: inline;
+  border: 0 none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+/*================ #Tables ================*/
+table {
+  margin-bottom: $gutter-site / 2;
+
+  a {
+    border-bottom: 1px solid currentColor;
+  }
+}
+
+th {
+  font-family: $font-stack-header;
+  font-style: $font-style-header;
+  font-weight: $font-weight-body--bold;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid $color-border;
+  padding: 10px 14px;
+}
+
+tbody th,
+tfoot th {
+  font-weight: normal;
+}
+
+
+/*============================================================================
+  Responsive tables, defined with .responsive-table on table element.
+==============================================================================*/
+@include media-query($small) {
+  .responsive-table {
+    thead {
+      display: none;
+    }
+
+    th,
+    td {
+      float: left;
+      clear: left;
+      width: 100%;
+      text-align: right;
+      padding: $gutter-site / 2;
+      border: 0;
+      margin: 0;
+    }
+
+    th::before,
+    td::before {
+      content: attr(data-label);
+      float: left;
+      text-align: center;
+      padding-right: 10px;
+      font-weight: normal;
+    }
+  }
+
+  .responsive-table__row + .responsive-table__row,
+  tfoot > .responsive-table__row:first-child {
+    position: relative;
+    margin-top: 10px;
+    padding-top: $gutter-site;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: $gutter-site / 2;
+      right: $gutter-site / 2;
+      border-bottom: 1px solid $color-border;
+    }
+  }
+}
+
+/*================ #Images and Iframes ================*/
+svg:not(:root) {
+  overflow: hidden;
+}
+
+
+/*================ Forms ================*/
+form {
+  margin: 0;
+}
+
+fieldset {
+  border: 1px solid $color-border-form;
+  margin: 0 0 $gutter-site;
+  padding: $gutter-site / 2;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  &[type="submit"] {
+    cursor: pointer;
+  }
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+
+  @include media-query($small) {
+    font-size: em($font-size-base - 2px);
+  }
+
+  [type="radio"] + &,
+  [type="checkbox"] + & {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  &[for] {
+    cursor: pointer;
+  }
+}
+
+input,
+textarea,
+select {
+  border: 1px solid $color-border-form;
+  background-color: $color-text-field;
+  color: $color-text-field-text;
+  max-width: 100%;
+  line-height: 1.2;
+  border-radius: $border-radius;
+
+  &:focus {
+    border-color: darken($color-border-form, 10%);
+  }
+
+  &[disabled] {
+    cursor: default;
+    background-color: $color-disabled;
+    border-color: $color-disabled-border;
+  }
+
+  &.input--error {
+    &::-webkit-input-placeholder {
+      @include error-placeholder-text();
+    }
+
+    &::-moz-placeholder {
+      @include error-placeholder-text();
+    }
+
+    &:-ms-input-placeholder {
+      @include error-placeholder-text();
+    }
+
+    &::-ms-input-placeholder {
+      @include error-placeholder-text($opacity: 1);
+    }
+  }
+}
+
+textarea {
+  min-height: 100px;
+}
+
+select {
+  appearance: none;
+  background-position: right center;
+  background: {
+    image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgOSA5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik04LjU0MjA0IDIuNTU4MDZDOC43ODYxMiAyLjgwMjE0IDguNzg2MTIgMy4xOTc4NiA4LjU0MjA0IDMuNDQxOTRMNC45NDI0MiA3LjA0MTU2QzQuODI1MjEgNy4xNTg3NyA0LjY2NTg2IDcuMjI1IDQuNTAwMSA3LjIyNUM0LjMzNDM0IDcuMjI1IDQuMTc1MzcgNy4xNTkxNSA0LjA1ODE2IDcuMDQxOTRMMC40NTgxNTcgMy40NDE5NEMwLjIxNDA3OSAzLjE5Nzg2IDAuMjE0MDc5IDIuODAyMTQgMC40NTgxNTcgMi41NTgwNkMwLjcwMjIzNCAyLjMxMzk4IDEuMDk3OTYgMi4zMTM5OCAxLjM0MjA0IDIuNTU4MDZMNC41MDAxIDUuNzE2MTJMNy42NTgxNiAyLjU1ODA2QzcuOTAyMjMgMi4zMTM5OCA4LjI5Nzk2IDIuMzEzOTggOC41NDIwNCAyLjU1ODA2WiIgZmlsbD0iIzAwMDAwMCIvPgo8L3N2Zz4K');
+    repeat: no-repeat;
+    position: right 10px center;
+  }
+  line-height: 1.2;
+  padding-right: 28px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  cursor: pointer;
+  padding-top: $input-padding-top-bottom-small;
+  padding-left: $input-padding-left-right-small;
+  padding-bottom: $input-padding-top-bottom-small;
+
+  @include media-query($medium-up) {
+    padding-top: $input-padding-top-bottom;
+    padding-left: $input-padding-left-right;
+    padding-bottom: $input-padding-top-bottom;
+  }
+}
+
+optgroup {
+  font-weight: $font-weight-body--bold;
+}
+
+// Force option color (affects IE only)
+option {
+  color: $color-text;
+  background-color: $color-body;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+::-webkit-input-placeholder {
+  @include placeholder-text();
+}
+
+::-moz-placeholder {
+  @include placeholder-text();
+}
+
+:-ms-input-placeholder {
+  @include placeholder-text();
+}
+
+::-ms-input-placeholder {
+  @include placeholder-text($opacity: 1);
+}
+
+input,
+textarea {
+  padding: $input-padding-top-bottom-small $input-padding-left-right-small;
+
+  @include media-query($medium-up) {
+    padding: $input-padding-top-bottom $input-padding-left-right;
+  }
+}
+
+/*================ Vertical forms ================*/
+.form-vertical {
+  input,
+  select,
+  textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: ($section-spacing-small / 1.8); // same as <p>
+
+    &.input--error {
+      margin-bottom: ($section-spacing-small / 3);
+    }
+  }
+
+  [type="radio"],
+  [type="checkbox"] {
+    display: inline-block;
+    width: auto;
+    margin-right: 5px;
+  }
+
+  [type="submit"],
+  .btn {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+/*================ Form feedback messages ================*/
+.form-message {
+  padding: $input-padding-top-bottom-small;
+  margin: 0 0 ($gutter-site / 2);
+
+  @include media-query($medium-up) {
+    padding: $input-padding-top-bottom;
+  }
+}
+
+.form-message--success {
+  border: 1px solid $color-success;
+  background-color: $color-success-bg;
+  color: $color-success;
+  display: block;
+  width: 100%;
+}
+
+.form-message--error {
+  color: $color-error-message-list;
+  border: 1px solid $color-error;
+  background-color: $color-error-bg;
+  padding: 1rem 1.3rem;
+  text-align: left;
+  width: 100%;
+
+  li {
+    list-style-type: disc;
+    list-style-position: inside;
+  }
+}
+
+.page-width {
+  padding-left: $gutter-site;
+  padding-right: $gutter-site;
+
+  @include media-query($small) {
+    padding-left: $gutter-site-mobile;
+    padding-right: $gutter-site-mobile;
+  }
+}
+
+.page-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+.myaccount {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.myaccount__order-history {
+  @include media-query($medium-up) {
+    flex: 1 0 percentage(2/3);
+  }
+}
+
+.myaccount__account-details {
+  @include media-query($medium-up) {
+    flex: 1 0 percentage(1/3);
+  }
+}
+/*================ PAYWHIRL ================*/
+
+.btn .icon-spinner {
+  width: 16px;
+  height: 16px;
+  margin: -5px 0 -3px 5px
+}
+
+.btn:not([disabled]) .icon-spinner {
+  display: none;
+}
+
+.pw-message-wrap p {
+  margin-bottom: ($gutter-site / 2);
+}
+
+.pw-attempt-billing-button {
+  float: right;
+  margin-top: -0.25em;
+}

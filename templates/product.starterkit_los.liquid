@@ -1,0 +1,123 @@
+
+
+
+<!-- spurit_sri-added -->
+{% render 'spurit_sri-product-snippet' %}
+<!-- /spurit_sri-added -->
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+<div class="section-header stact-header sas">
+<div class="page-width">
+<div class="page-hd-row">
+<div class="ons-colam">
+  <h1><a href="/collections/all">shop</a></h1>
+</div>
+</div>
+</div>
+</div> 
+{% section 'product-template-starter-kit-los' %}
+<div id="xt-ew" class="prod-rew" >
+  <div class="page-width">
+    <h2 class="titel-notr">klanten beoordelingen</h2> 
+
+    {% comment %}
+    <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+  {% endcomment %}
+    
+    
+  <div class="reviews-set">
+    <div data-oke-reviews-widget-holder data-oke-reviews-product-id="shopify-{{ product.id }}">
+      <div data-oke-reviews-nav-bar></div>
+      <div data-oke-reviews-widget>{{ product.metafields.okendo.ProductReviewsWidgetSnippet }}</div>
+      <div data-oke-reviews-qanda></div>
+      </div>
+    </div> 
+  </div>
+</div>
+{% section 'collection-carusel' %}
+{%- section 'products-banner' -%}
+
+ 
+
+
+
+
+
+{% if collection %}
+  <div class="text-center return-link-wrapper page-width">
+    <a href="{{ collection.url }}" class="btn btn--secondary btn--has-icon-before return-link">
+      {% include 'icon-arrow-left' %}
+      {{ 'products.product.back_to_collection' | t: title: collection.title }}
+    </a>
+  </div>
+{% endif %}
+
+<script>
+  // Override default values of shop.strings for each template.
+  // Alternate product templates can change values of
+  // add to cart button, sold out, and unavailable states here.
+  theme.productStrings = {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    soldOut: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }}
+  }
+</script>
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  {%- if product.featured_media -%}
+    {%- assign media_size = product.featured_media.preview_image.width | append: 'x' -%}
+    "image": [
+      {{ product.featured_media | img_url: media_size | prepend: "https:" | json }}
+    ],
+  {%- endif -%}
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Thing",
+    "name": {{ product.vendor | json }}
+  },
+  "offers": [
+    {%- for variant in product.variants -%}
+      {
+        "@type" : "Offer",
+        {%- if variant.sku != blank -%}
+          "sku": {{ variant.sku | json }},
+        {%- endif -%}
+        "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price" : {{ variant.price | divided_by: 100.00 | json }},
+        "priceCurrency" : {{ cart.currency.iso_code | json }},
+        "url" : {{ shop.url | append: variant.url | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+  {% if product.metafields.okendo.summaryData.reviewCount > 0 %}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.metafields.okendo.summaryData.reviewAverageValue }}",
+    "ratingCount": "{{ product.metafields.okendo.summaryData.reviewCount }}"
+  }
+ 		{% elsif product.metafields.okendo.ReviewCount > 0 %}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.metafields.okendo.ReviewAverageValue }}",
+    "ratingCount": "{{ product.metafields.okendo.ReviewCount }}"
+  }
+  {% endif %}
+}
+</script>
+
+
+
+
+{{product.metafields.shogun.below}}
+

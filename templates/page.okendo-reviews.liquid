@@ -1,0 +1,20 @@
+<section class="review-banner">
+    <div class="caption">
+      <h2>ONTDEK DE MENING VAN <br> ONZE FAIRYFANS!</h2>
+      <div class="okeReviews okeReviews--theme  reviews-counter-container"></div>
+    </div>
+</section>
+<div class="reviews-content-container page-width">
+    <div data-oke-reviews-widget=""></div>
+</div>
+<script>
+    window.onload = function(){
+        var time = 3000;
+        if($(window).width() < 768 ) {
+            time = 12000;
+        }
+      setTimeout(function(){ 
+        $('.okeReviews-reviewsAggregate-side').clone().appendTo('.reviews-counter-container');
+      }, time);
+    }
+</script> 

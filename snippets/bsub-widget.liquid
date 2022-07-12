@@ -1,0 +1,177 @@
+
+{%- liquid
+  if product.requires_selling_plan or product.selected_selling_plan_allocation
+    assign current_selling_plan_allocation = product.selected_or_first_available_selling_plan_allocation
+  else
+    assign current_selling_plan_allocation = nil
+  endif
+-%}
+
+<!-- Bold Subscriptions Widget -->
+{% if product.selling_plan_groups.size > 0 %}
+<fieldset
+  class="bsub-widget"
+  role="{%- if product.requires_selling_plan == false or product.selling_plan_groups.size > 1 -%} radiogroup {%- else -%} group {%- endif -%}"
+  data-bsub-widget
+>
+
+ <div class="mak-tl">abonneer & bespaar X%</div>
+  <div
+    class="bsub-widget__wrapper
+    {% if product.requires_selling_plan and product.selling_plan_groups.size == 1 %} bsub-widget__wrapper--single {% endif %}"
+  >
+    <!-- Selling Plan Groups (Purchase Options) -->
+    <div class="bsub-widget__groups-container">
+      <!-- render One-time purchase option -->
+      {% unless product.requires_selling_plan == true %}
+        <div class="bsub-widget__group">
+          <label class="bsub-widget__group-label">
+            <input
+              type="radio" value="once" name="bsub-selling-plan-group"
+              data-bsub-selling-plan-group-input
+              data-bsub-purchase-option-one-time
+              {% unless current_selling_plan_allocation %} checked {% endunless %}
+              onchange="window.BOLD.BsubWidget.handleSellingPlanGroupChange(event)"
+            >
+            <div class="bsub-widget__group-header">
+              <svg class="bsub-widget__image" viewBox="0 0 72 72" fill="currentColor">
+                <g opacity="0.8">
+                  <path d="M30 6L13.5 13.5L18 16.5L31.5 22.5L36 33L40.5 22.5L54 16.5L58.5 13.5L42 6L36 18L30 6Z" fill="black" fill-opacity="0.2"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.38849 10.3276L30.7645 20.2186L36 33.3073L41.2355 20.2186L67.6116 10.3276L61 30.1622V55.6139C61 56.8645 60.2243 57.9838 59.0534 58.4229L36 67.0679L12.9467 58.4229C11.7757 57.9838 11 56.8645 11 55.6139V30.1622L4.38849 10.3276ZM7.61156 13.6723L13 29.8376V55.6139C13 56.0308 13.2586 56.4039 13.6489 56.5503L36 64.9319L58.3512 56.5503C58.7415 56.4039 59 56.0308 59 55.6139V29.8376L64.3885 13.6722L42.7645 21.7812L36 38.6925L29.2355 21.7812L7.61156 13.6723Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M36.12 19.9325L41.6899 22.0132L40.99 23.8868L36.12 22.0675L31.01 23.9768L30.31 22.1033L36.12 19.9325Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M41.4523 4.67666L61.0545 13.0911L60.2656 14.9289L42.5477 7.32335L36.9285 21.3714L35.0715 20.6286L41.4523 4.67666Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M30.5477 4.67666L36.9285 20.6286L35.0715 21.3714L29.4523 7.32335L11.7345 14.9289L10.9456 13.0911L30.5477 4.67666Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M35.8245 39.4682L11.8245 30.4682L12.1756 29.5318L36.1756 38.5318L35.8245 39.4682Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M36.1755 39.4682L60.1755 30.4682L59.8244 29.5318L35.8244 38.5318L36.1755 39.4682Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M36.5 39V66H35.5V39H36.5Z" fill="currentColor"/>
+                </g>
+              </svg>
+              <div class="bsub-widget__text">
+                One-time Purchase
+                <!-- {{ 'products.product.one_time_purchase' | t }} -->
+              </div>
+            </div>
+          </label>
+        </div>
+      {% endunless %}
+
+      <!-- selling plan group radio -->
+      {% for group in product.selling_plan_groups %}
+        <div
+          class="bsub-widget__group"
+          data-bsub-selling-plan-group
+          data-bsub-selling-plan-group-id="{{ group.id }}"
+        >
+          <label class="bsub-widget__group-label">
+            <input
+              data-bsub-selling-plan-group-input
+              class="bsub-widget__input"
+              type="radio" value="{{group.id}}" name="bsub-selling-plan-group"
+              {% if group.id == current_selling_plan_allocation.selling_plan.group_id %} checked {% endif %}
+              onchange="window.BOLD.BsubWidget.handleSellingPlanGroupChange(event)"
+            >
+            <div class="bsub-widget__group-header">
+              <svg class="bsub-widget__image" viewBox="0 0 72 72" fill="currentColor">
+                <g opacity="0.8">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M11 16C10.4477 16 10 16.4477 10 17V32.01H8V17C8 15.3431 9.34315 14 11 14H40C41.6569 14 43 15.3431 43 17V49H40.95V47H41V17C41 16.4477 40.5523 16 40 16H11Z" fill="currentColor"/>
+                  <path d="M51 54C54.3137 54 57 51.3137 57 48C57 44.6863 54.3137 42 51 42C47.6863 42 45 44.6863 45 48C45 51.3137 47.6863 54 51 54Z" fill="currentColor" fill-opacity="0.2"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M51 43C48.2386 43 46 45.2386 46 48C46 50.7614 48.2386 53 51 53C53.7614 53 56 50.7614 56 48C56 45.2386 53.7614 43 51 43ZM44 48C44 44.134 47.134 41 51 41C54.866 41 58 44.134 58 48C58 51.866 54.866 55 51 55C47.134 55 44 51.866 44 48Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M53.5858 22H42V20H54.4142L67 32.5858V49H57V47H65V33.4142L53.5858 22Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M50.5 28.7929L55.2071 33.5H50.5V28.7929ZM51.5 31.2071V32.5H52.7929L51.5 31.2071Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M42 47H45V49H42V47Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M24 24.94C14.6112 24.94 7 32.5512 7 41.94C7 51.3288 14.6112 58.94 24 58.94C33.3888 58.94 41 51.3288 41 41.94C41 32.5512 33.3888 24.94 24 24.94ZM5 41.94C5 31.4466 13.5066 22.94 24 22.94C34.4934 22.94 43 31.4466 43 41.94C43 52.4334 34.4934 60.94 24 60.94C13.5066 60.94 5 52.4334 5 41.94Z" fill="currentColor"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M23.5 32.94H24.5V41.7329L30.3536 47.5864L29.6464 48.2936L23.5 42.1471V32.94Z" fill="currentColor"/>
+                </g>
+              </svg>
+              <div class="bsub-widget__text">
+                <span>{{- group.name -}}</span>
+                <br/>
+                <span
+                  class="bsub-widget__group-discount-summary"
+                  data-bsub-group-discount-summary
+                ></span>
+              </div>
+            </div>
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Render individual selling plans -->
+    {% for group in product.selling_plan_groups %}
+      <div
+        class="bsub-widget__plans-container
+          {% unless current_selling_plan_allocation.selling_plan.group_id == group.id %} bsub__hidden {% endunless %}"
+        data-bsub-selling-plan-group-id="{{ group.id }}"
+        data-bsub-selling-plans-container
+      >
+        <fieldset>
+        
+          {% for plan in group.selling_plans %}
+            <div
+              class="bsub-widget__plan"
+              data-bsub-selling-plan
+              data-bsub-selling-plan-id="{{ plan.id }}"
+            >
+              <label class="bsub-widget__plan-label">
+                <input
+                  data-bsub-selling-plan-input
+                  type="radio" value="{{ plan.id }}"
+                  name="bsub-selling-plan-{{ group.id }}"
+                  {% if current_selling_plan_allocation == nil and forloop.first %} checked {% endif %}
+                  {% if current_selling_plan_allocation.selling_plan.id == plan.id -%} checked {% endif %}
+                  onchange="window.BOLD.BsubWidget.handleSellingPlanChange(event)"
+                >
+                <div class="bsub-widget__plan-header">
+                  <svg class="bsub-widget__checked-icon bsub-widget__image" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M24,12 C24,18.627 18.627,24 12,24 C5.373,24 0,18.627 0,12 C0,5.373 5.373,0 12,0 C18.627,0 24,5.373 24,12 Z M7.0050175,11.4087067 C6.61372743,11.0189496 5.98056367,11.0201924 5.59080666,11.4114825 C5.20104965,11.8027726 5.20229244,12.4359363 5.5935825,12.8256933 L9.9325825,17.1476933 C10.3226506,17.5362331 10.9534086,17.5363886 11.3436681,17.1480412 L19.5076681,9.02404115 C19.8991503,8.63447708 19.9007052,8.00131401 19.5111412,7.60983186 C19.1215771,7.2183497 18.488414,7.21679478 18.0969319,7.60635885 L10.6386478,15.0281006 L7.0050175,11.4087067 Z"></path>
+                  </svg>
+                  <svg class="bsub-widget__unchecked-icon bsub-widget__image" viewBox="0 0 18 18" fill="none">
+                    <circle cx="9" cy="9" r="9" fill="white" fill-opacity="0.1"/>
+                    <circle cx="9" cy="9" r="8.5" stroke="black" stroke-opacity="0.2"/>
+                  </svg>
+                  <div class="bsub-widget__text">
+                    {{- plan.name -}}
+                  </div>
+                  <div class="bsub-widget__plan-pricing">
+                    <span data-bsub-per-delivery-price></span>
+                     <!--<span>&nbsp;/&nbsp;</span>
+                   <span data-bsub-delivery-frequency>delivery</span>-->
+                  </div>
+                </div>
+              </label>
+            </div>
+          {% endfor %}
+        </fieldset>
+      </div>
+    {% endfor %}
+  </div>
+
+  <input
+    type="hidden"
+    name="selling_plan"
+    data-bsub-selling-plan-id-input
+    value="{{ current_selling_plan_allocation.selling_plan.id }}"
+  />
+
+  <script
+    type="application/json"
+    data-bsub-product-json
+    data-bsub-product-id="{{ product.id }}"
+  >
+    {{ product | json }}
+  </script>
+</fieldset>
+
+<script
+  type="application/json"
+  data-bsub-money-format="{{shop.money_format}}"
+></script>
+
+<input
+  type="hidden"
+  data-bsub-page-template
+  value="{{ template }}"
+/>
+
+{% endif %}

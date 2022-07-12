@@ -1,0 +1,111 @@
+<div class="shopify_explorer__content">
+  {%- assign expand_questions = section.settings.expand_questions -%}
+
+  {%- for block in section.blocks -%}
+
+    {%- case block.type -%}
+  
+  
+  
+      {%- when 'question' -%}
+  
+  
+        <div class="shopify_explorer_faq__item {% unless expand_questions %}shopify_explorer_faq__item--expandable{% endunless %}" {{ block.shopify_attributes }}>
+          
+          <div class="set ">
+      
+           <span class="{{ block.settings.title }}" class=" {% unless expand_questions %}link{% endunless %}">
+              <div class="page-width">
+             {{ block.settings.title }}
+             </div>
+            </span>
+         
+            
+        <div class="sed-ut">
+             <div class="page-width">
+            {{ block.settings.answer }}
+          </div>
+            </div>
+        </div>
+  
+  
+  
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+
+
+
+
+
+
+
+
+{% schema %}
+  {
+    "name": "FAQs",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "expand_questions",
+        "label": "Expand all questions by default",
+        "default": false
+      }
+  ],
+    "blocks": [
+   
+      {
+        "type": "question",
+        "name": "Question",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question"
+          },
+          {
+            "type": "textarea",
+            "id": "answer",
+            "label": "Answer"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+ 
+{% endstylesheet %}
+ <script>$(document).ready(function() {
+  $(".set > span").on("click", function() {
+    if ($(this).hasClass("active")) {
+      $(this).removeClass("active");
+      $(this)
+        .siblings(".sed-ut")
+        .slideUp(200);
+      $(".set > span i")
+        .removeClass("fa-minus")
+        .addClass("fa-plus");
+    } else {
+      $(".set > span i")
+        .removeClass("fa-minus")
+        .addClass("fa-plus");
+      $(this)
+        .find("i")
+        .removeClass("fa-plus")
+        .addClass("fa-minus");
+      $(".set > span").removeClass("active");
+      $(this).addClass("active");
+      $(".sed-ut").slideUp(200);
+      $(this)
+        .siblings(".sed-ut")
+        .slideDown(200);
+    }
+  });
+});
+</script>
+ 
+

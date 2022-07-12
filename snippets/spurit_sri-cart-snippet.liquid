@@ -1,0 +1,14 @@
+{% assign cartParts = cart | json | split: ',' | first | split: '"' %}
+{% assign tokenIndex = cartParts.size | minus: 1%}
+<script>
+    if(typeof(Spurit) === 'undefined'){
+        var Spurit = {};
+    }
+    if(!Spurit.recurringInvoices){
+        Spurit.recurringInvoices = {};
+    }
+    if(!Spurit.recurringInvoices.snippet){
+        Spurit.recurringInvoices.snippet = {};
+    }
+    Spurit.recurringInvoices.snippet.cart = {{ cart | json }};
+</script>

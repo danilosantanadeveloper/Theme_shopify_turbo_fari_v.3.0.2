@@ -1,0 +1,106 @@
+<div class="mark-whp">
+  <h3>Bevat <span id="stater_kit_num">1</span> starterkit en gebundeld producten</h3>
+</div>
+<div class="bundle_container">
+
+    {% for block in section.blocks %}
+      {%- assign product = all_products[block.settings.bundle_product] -%}
+      {%- assign current_variant = product.selected_or_first_available_variant -%}
+      {%- liquid
+        if current_variant.title
+          assign compare_at_price = current_variant.compare_at_price
+          assign price = current_variant.price
+          assign available = current_variant.available
+        else
+          assign compare_at_price = 1999
+          assign price = 1999
+          assign available = true
+        endif
+      
+        assign money_price = price | money
+      -%}
+      <div class="product-cell">
+        <div class="product_image">
+          <div class="lazylo-colam">
+            {% capture wrapper_id %}ProductCardImageWrapper-{{ block.id }}-{{ product.id }}{% endcapture %}
+            {%- assign preview_image = product.featured_media.preview_image -%}
+            {%- assign img_url = preview_image | img_url: '3x3' | replace: '_3x3.', '_{width}x.' -%}
+            {% if product.images.size > 1 %}
+              {% for image_cell in product.images limit:5 %}
+                <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+                  <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+                    <div class="image-cell">
+                      {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                        {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                        <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+                      {%- endif -%}
+                      <img class="grid-view-item__image lazyload"
+                        alt="{{ image_cell.alt }}"
+                        data-src="{{ image_cell.src | product_img_url: 'master' }}"
+                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ image_cell.aspect_ratio }}"
+                        data-sizes="auto"
+                        data-image /> 
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+                <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+                  <div class="image-cell">
+                    {%- if product.available and product.compare_at_price_min > product.price_min -%}
+                      {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+                      <div style="position:relative;"><div class="hc-sale-tag"><span>{{ discount }}</span></div></div>
+                    {%- endif -%}
+                    <img  class="grid-view-item__image lazyload"
+                          alt="{{ preview_image.alt }}"
+                          data-src="{{ img_url }}"
+                          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                          data-aspectratio="{{ preview_image.aspect_ratio }}"
+                          data-sizes="auto"
+                          data-image />
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        <h1 class="product-single__title">{{ product.title }}  x<span class="qty-num"> 1</span> <span> QTY</span></h1>
+        <div class="pricing-info">
+          <span class="month_value" data-value="">Subscription Interval:  <span>1</span> maand</span>
+        </div>
+        <select data-productid="{{ product.id }}" id="ProductSelect-{{ block.id }}" class="bundle-form__variants no-js">
+          {% for variant in product.variants %}
+          <option data-attr="{{ variant.price }}" value = "{{ variant.metafields.subscriptions.discount_variant_id }}" data-title="{{ variant.title }}" data-origin-value="{{ variant.id }}"
+              {%- if variant == current_variant %} selected="selected" {%- endif -%}
+            >
+              {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+            </option>
+          {% endfor %}
+        </select>
+        {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}          
+          <div class="varia-notr">
+            {% for value in option.values %}
+                {% for variant in product.varia-notrnts %}
+                {%- assign display = "block" -%}
+                {% if variant.image and variant.title contains value%}
+                    {%- assign img = variant.image | img_url: "large" -%}
+                    {%- assign display = "none" -%}
+                {% endif %}
+                {% endfor %}
+                {% assign product_title = product.title | handleize %}
+                {% if forloop.first == true %}
+                <div class="option-item {{product.title}}">{% unless product_title contains "gift" %}<span>{{ value }}</span>{% endunless %}<span style="background-color:{{value}}; display:inline-block;background-position:center;" class="bundle-color-swatch {{value}} active" title="{{value}}">{{value}}</span></div>
+                {% else %}  
+                <div class="option-item">{% unless product_title contains "gift" %}<span>{{ value }}</span>{% endunless %}<span style="background-color:{{value}}; display:inline-block;background-position:center;" class="bundle-color-swatch {{value}}" title="{{value}}">{{value}}</span></div> 
+                {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+        {% endunless %}
+        
+      </div>
+    {% endfor %}
+  </div>
