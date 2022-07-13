@@ -250,6 +250,17 @@ button.slick-next, button.slick-next:hover {
 	justify-content: center;
 	background-size: 95px;
 }
+button.slick-next, button.slick-next:hover {
+	position: absolute;
+	top: 41%;
+	right: 54px;
+	width: 24px;
+	height: 42px;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	background-size: 95px;
+}
 button.slick-prev, button.slick-prev:hover {
 	position: absolute;
 	top: 41%;
