@@ -274,6 +274,30 @@ button.slick-prev, button.slick-prev:hover {
 	align-items: center;
 	justify-content: center;
 }
+button.slick-next, button.slick-next:hover {
+	position: absolute;
+	top: 41%;
+	right: 54px;
+	width: 24px;
+	height: 42px;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	background-size: 95px;
+}
+button.slick-prev, button.slick-prev:hover {
+	position: absolute;
+	top: 41%;
+	left: 15px;
+	z-index: 1;
+	width: 24px;
+	height: 42px;
+	background-size: 95px;
+	background-position-x: right;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+}
 .slick-prev:before, .slick-next:before {
 	font-size: 70px;
 	color: #EA8496;
